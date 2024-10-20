@@ -16,20 +16,22 @@ struct GalleryView: View {
 
     var body: some View {
         ZStack {
-            if items.isEmpty {
-                Text("No Media Found")
+            if !viewModel.message.isEmpty {
+                Text(viewModel.message)
                     .font(.title3)
             }
             
             FloatingBottomBarView {
                 FloatingBottom(icon: "plus", background: .blue) {
                    // show media picker
-                    viewModel.showPicker.toggle()
+                    viewModel.togglePicker()
                 }
             }
         }
         .sheet(isPresented: $viewModel.showPicker) {
-            PhotoLibraryView()
+            PhotoLibraryView { assets in
+                viewModel.importSelected(assets: assets)
+            }
         }
     }
 }

@@ -10,19 +10,17 @@ import SwiftUI
 struct FloatingBottomBarView<Content: View>: View {
     let content: Content
 
-    // Initialize with buttons and content
     init(@ViewBuilder content: () -> Content) {
         self.content = content()
     }
 
     var body: some View {
         ZStack {
-            // Floating bottom bar
             VStack {
                 Spacer()
 
                 HStack {
-                    Spacer() // Push buttons to the right
+                    Spacer() /// Spacer for pushing buttons to the right
                     content
                 }
                 .padding(.horizontal)
