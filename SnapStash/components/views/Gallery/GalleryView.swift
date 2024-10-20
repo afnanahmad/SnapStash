@@ -10,7 +10,9 @@ import SwiftData
 
 struct GalleryView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [GalleryItem]
+    @Query(sort: \GalleryItem.timestamp, order: .reverse) private var items: [GalleryItem]
+
+    @StateObject private var viewModel = GalleryViewModel()
 
     var body: some View {
         ZStack {
@@ -22,8 +24,12 @@ struct GalleryView: View {
             FloatingBottomBarView {
                 FloatingBottom(icon: "plus", background: .blue) {
                    // show media picker
+                    viewModel.showPicker.toggle()
                 }
             }
+        }
+        .sheet(isPresented: $viewModel.showPicker) {
+            PhotoLibraryView()
         }
     }
 }
