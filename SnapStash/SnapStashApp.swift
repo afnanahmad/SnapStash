@@ -12,7 +12,7 @@ import SwiftData
 struct SnapStashApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            GalleryItem.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,7 +25,7 @@ struct SnapStashApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            GalleryView()
         }
         .modelContainer(sharedModelContainer)
     }
