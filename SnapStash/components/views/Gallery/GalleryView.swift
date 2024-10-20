@@ -69,9 +69,7 @@ struct GalleryView: View {
             }
         }
         .fullScreenCover(item: $viewModel.fullScreenItem) { fullScreenItem in
-            FullScreenMediaView(
-                
-            )
+            FullScreenMediaView(galleryItem: fullScreenItem)
         }
     }
 }
