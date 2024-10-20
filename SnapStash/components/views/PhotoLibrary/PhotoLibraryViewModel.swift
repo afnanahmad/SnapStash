@@ -10,6 +10,8 @@ import SwiftUI
 
 class PhotoLibraryViewModel: NSObject, ObservableObject, PHPhotoLibraryChangeObserver {
     @Published var assets: [PHAsset] = []
+    @Published var selectedAssets: [PHAsset] = []
+    
     @Published var authorizationStatus: PhotoLibraryAuthorizationStatus = .notDetermined
     @Published var selectedMediaType: PhotoLibraryMediaType = .all
 
@@ -104,5 +106,14 @@ class PhotoLibraryViewModel: NSObject, ObservableObject, PHPhotoLibraryChangeObs
         /// Update the fetch result and refresh the assets array
         self.fetchResult = changes.fetchResultAfterChanges
         updateAssetsFromFetchResult()
+    }
+    
+    /// Toggle selection of an asset
+    func toggleSelection(for asset: PHAsset) {
+        if let index = selectedAssets.firstIndex(of: asset) {
+            selectedAssets.remove(at: index)
+        } else {
+            selectedAssets.append(asset)
+        }
     }
 }

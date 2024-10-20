@@ -51,7 +51,12 @@ struct PhotoLibraryView: View {
                                             LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))]) {
                                                 ForEach(viewModel.assets, id: \.self) { asset in
                                                     AssetThumbnailView(asset: asset,
-                                                                       size: CGSize(width: 100, height: 100))
+                                                                   size: CGSize(width: 100, height: 100),
+                                                                   isSelected: viewModel.selectedAssets.contains(asset),
+                                                                   selectionNumber: viewModel.selectedAssets.firstIndex(of: asset))
+                                                        .onTapGesture {
+                                                            viewModel.toggleSelection(for: asset)
+                                                        }
                                                 }
                                             }
                                         }
@@ -77,11 +82,22 @@ struct PhotoLibraryView: View {
                         Image(systemName: "xmark")
                     }
                 }
+                if viewModel.selectedAssets.count > 0 {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(action: {
+                            onSelectedAssets(viewModel.selectedAssets)
+                            dismiss()
+                        }) {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                }
             }
         }
     }
+
 }
 
 #Preview {
-    PhotoLibraryView { _ in }
+    PhotoLibraryView() { _ in }
 }

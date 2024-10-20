@@ -22,11 +22,14 @@ struct SnapStashApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+    
+    @StateObject private var assetManager = AssetManager()
 
     var body: some Scene {
         WindowGroup {
             GalleryView()
         }
         .modelContainer(sharedModelContainer)
+        .environmentObject(assetManager)
     }
 }

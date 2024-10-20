@@ -12,6 +12,8 @@ import SwiftUI
 struct AssetThumbnailView: View {
     var asset: PHAsset
     var size: CGSize
+    var isSelected: Bool
+    var selectionNumber: Int?
     
     @State private var thumbnailImage: UIImage?
     
@@ -23,6 +25,24 @@ struct AssetThumbnailView: View {
                     .scaledToFill()
                     .frame(width: size.width, height: size.height)
                     .cornerRadius(8)
+                    .overlay( /// Add a border around the image if selected
+                        RoundedRectangle(cornerRadius: 8)
+                            .strokeBorder(isSelected ? .blue : .clear, lineWidth: 3)
+                    )
+                    .overlay( /// Display the selection number if selected
+                        Group {
+                            if let number = selectionNumber {
+                                Text("\(number + 1)") /// +1 to make it 1-based instead of 0-based
+                                    .font(.system(size: 16, weight: .bold))
+                                    .foregroundColor(.white)
+                                    .padding(8)
+                                    .background(Circle().fill(Color.blue))
+                                    .padding(.top, 5)
+                                    .padding(.leading, 8)
+                            }
+                        },
+                        alignment: .topLeading
+                    )
                     
             } else {
                 ZStack {
@@ -34,6 +54,16 @@ struct AssetThumbnailView: View {
                             fetchThumbnail()
                         }
                 }
+            }
+            
+            /// Show video indicator if the asset is a video
+            if asset.mediaType == .video {
+                Image(systemName: "video.fill")
+                    .foregroundColor(.white)
+                    .padding(6)
+                    .background(Color.black.opacity(0.7))
+                    .clipShape(Circle())
+                    .offset(x: size.width / 2 - 20, y: size.height / 2 - 20)
             }
         }
     }
